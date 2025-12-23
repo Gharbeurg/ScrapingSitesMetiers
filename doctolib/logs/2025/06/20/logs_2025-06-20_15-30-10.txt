@@ -1,0 +1,23 @@
+2025-06-20 15:30:10,484 - INFO: Logging Started
+2025-06-20 15:30:10,484 - DEBUG: scrapper init
+2025-06-20 15:30:11,770 - DEBUG: wrapper created for : browser.new_context()
+2025-06-20 15:30:11,774 - DEBUG: wrapper created for : browser.new_page()
+2025-06-20 15:30:11,809 - DEBUG: wrapper created for : bs_context.new_page()
+2025-06-20 15:30:12,073 - DEBUG: wrapper created for : page.goto()
+2025-06-20 15:30:12,073 - INFO: Scraper Entered
+2025-06-20 15:30:12,073 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json
+2025-06-20 15:30:12,850 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=2
+2025-06-20 15:30:13,539 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=3
+2025-06-20 15:30:14,253 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=4
+2025-06-20 15:30:14,971 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=5
+2025-06-20 15:30:15,580 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=6
+2025-06-20 15:30:16,297 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=7
+2025-06-20 15:30:17,008 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=8
+2025-06-20 15:30:17,781 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=9
+2025-06-20 15:30:18,456 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=10
+2025-06-20 15:30:19,272 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=11
+2025-06-20 15:30:19,989 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=12
+2025-06-20 15:30:20,744 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=13
+2025-06-20 15:30:21,375 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=14
+2025-06-20 15:30:22,133 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=15
+2025-06-20 15:30:22,856 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=16

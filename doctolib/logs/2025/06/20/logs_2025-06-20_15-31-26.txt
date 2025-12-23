@@ -1,0 +1,21 @@
+2025-06-20 15:31:26,845 - INFO: Logging Started
+2025-06-20 15:31:26,845 - DEBUG: scrapper init
+2025-06-20 15:31:28,201 - DEBUG: wrapper created for : browser.new_context()
+2025-06-20 15:31:28,201 - DEBUG: wrapper created for : browser.new_page()
+2025-06-20 15:31:28,235 - DEBUG: wrapper created for : bs_context.new_page()
+2025-06-20 15:31:28,481 - DEBUG: wrapper created for : page.goto()
+2025-06-20 15:31:28,481 - INFO: Scraper Entered
+2025-06-20 15:31:28,481 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json
+2025-06-20 15:31:29,240 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=2
+2025-06-20 15:31:30,034 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=3
+2025-06-20 15:31:30,649 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=4
+2025-06-20 15:31:31,415 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=5
+2025-06-20 15:31:32,176 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=6
+2025-06-20 15:31:32,798 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=7
+2025-06-20 15:31:33,518 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=8
+2025-06-20 15:31:34,435 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=9
+2025-06-20 15:31:35,377 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=10
+2025-06-20 15:31:36,078 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=11
+2025-06-20 15:31:37,016 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=12
+2025-06-20 15:31:37,721 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=13
+2025-06-20 15:31:38,538 - INFO: Going to site : https://www.doctolib.fr/medecin-generaliste/paris.json?page=14

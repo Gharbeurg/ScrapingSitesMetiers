@@ -1,0 +1,3 @@
+2025-06-20 15:09:34,313 - INFO: Logging Started
+2025-06-20 15:09:34,313 - DEBUG: scrapper init
+2025-06-20 15:09:37,883 - INFO: Program Finished
