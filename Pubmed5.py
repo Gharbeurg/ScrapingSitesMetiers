@@ -6,6 +6,7 @@
 import os
 import time
 import pandas as pd
+from datetime import datetime, timedelta
 
 from Bio import Entrez, Medline
 from datetime import datetime
@@ -25,21 +26,23 @@ except Exception:
 # Paramètres
 # ========================
 BATCH_SIZE = 50  # taille de lot pour efetch (<=100 recommandé)
-TERME_CHERCHE = "multiple myeloma artificial intelligence"
-DATE_DEBUT = "2024/01/01"
-DATE_FIN = "2025/11/01"
+TERME_CHERCHE = "(('Colorectal Neoplasms'[MeSH Terms] OR colorectal cancer[Title/Abstract] OR colon cancer[Title/Abstract] OR rectal cancer[Title/Abstract]) AND ('Artificial Intelligence'[MeSH Terms] OR artificial intelligence[Title/Abstract] OR machine learning[Title/Abstract] OR deep learning[Title/Abstract] OR neural network*[Title/Abstract]))"
+DATE_DEBUT = "2025/09/01"
+DATE_FIN = "2026/03/01"
 MAIL_PUBMED = "dev@atawao.com"
 BASE_NCBI = "pubmed"
 ORDRE_TRI = "pub date"
 FORMAT_RESULTAT = "medline"
 FORMAT_ENREGISTREMENT = "text"
+MAX_ESearch_RESULTS = 9000  # max de résultats par sous-requête (sécurité < 9999)
+
+
 
 APIKEY = "2bad5e3552250d73f6000974773fb3d05c08"
 os.environ["NCBI_API_KEY"] = APIKEY
 
 fichier_facteur_impact = "C:/PYTHON/.params/impact_factor.txt"
 fichier_pubmed_sortie = "C:/PYTHON/.data/pubmed_sortie.xlsx"
-
 
 # ========================
 # Fonctions utilitaires
@@ -100,6 +103,67 @@ def jats_xml_to_plain_text(xml_str: str, max_chars: int = 200000) -> str:
 def now():
     return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
+def parse_yyyymmdd(s: str) -> datetime:
+    return datetime.strptime(s, "%Y/%m/%d")
+
+def fmt_yyyymmdd(d: datetime) -> str:
+    return d.strftime("%Y/%m/%d")
+
+def build_term(base_term: str, d1: datetime, d2: datetime) -> str:
+    # PDAT inclusif sur bornes en pratique (NCBI accepte bien ce format)
+    return f'{base_term} AND ({fmt_yyyymmdd(d1)}[PDAT] : {fmt_yyyymmdd(d2)}[PDAT])'
+
+def esearch_count(term: str) -> int:
+    h = Entrez.esearch(db=BASE_NCBI, term=term, sort=ORDRE_TRI, retmax=1)
+    r = Entrez.read(h)
+    return int(r.get("Count", 0))
+
+def fetch_all_ids_for_term(term: str) -> list[str]:
+    ids = []
+    # Ici retstart reste toujours < 9999 car on garantit Count <= MAX_ESearch_RESULTS
+    retstart = 0
+    while True:
+        h = Entrez.esearch(
+            db=BASE_NCBI,
+            term=term,
+            sort=ORDRE_TRI,
+            retstart=retstart,
+            retmax=BATCH_SIZE
+        )
+        r = Entrez.read(h)
+        batch = r.get("IdList", [])
+        if not batch:
+            break
+        ids.extend(batch)
+        retstart += len(batch)
+        time.sleep(0.34)
+    return ids
+
+def split_date_ranges(base_term: str, d1: datetime, d2: datetime) -> list[tuple[datetime, datetime]]:
+    """
+    Découpe [d1, d2] en sous-plages de dates pour que chaque sous-requête ait <= MAX_ESearch_RESULTS.
+    Méthode : on coupe en 2 (bisection) jusqu'à passer sous le seuil.
+    """
+    term = build_term(base_term, d1, d2)
+    cnt = esearch_count(term)
+
+    if cnt == 0:
+        return []
+
+    if cnt <= MAX_ESearch_RESULTS:
+        return [(d1, d2)]
+
+    # Si on est déjà au jour près et c'est encore trop, on ne peut pas couper plus fin
+    if d1.date() == d2.date():
+        # dans ce cas, il faudra une autre stratégie (ex: ajouter filtre supplémentaire), mais c’est rare
+        return [(d1, d2)]
+
+    mid = d1 + (d2 - d1) / 2
+    mid = datetime(mid.year, mid.month, mid.day)  # on tronque à minuit pour éviter les demi-jours
+
+    left = split_date_ranges(base_term, d1, mid)
+    right = split_date_ranges(base_term, mid + timedelta(days=1), d2)
+    return left + right
 
 def normalize_journal_name(name: str) -> str:
     if not isinstance(name, str):
@@ -238,37 +302,37 @@ df_impact["titre_norm"] = df_impact["titre"].str.strip().str.lower()
 # ========================
 # Recherche des PMIDs (tous)
 # ========================
-TERM = f'{TERME_CHERCHE} AND ({DATE_DEBUT}[PDAT] : {DATE_FIN}[PDAT])'
+BASE_TERM = TERME_CHERCHE
+d1 = parse_yyyymmdd(DATE_DEBUT)
+d2 = parse_yyyymmdd(DATE_FIN)
+
+TERM = build_term(BASE_TERM, d1, d2)
 print(f"{now()} - Requête PubMed: {TERM}")
 
-# Première requête pour connaître le total
-search = Entrez.esearch(db=BASE_NCBI, term=TERM, sort=ORDRE_TRI, retmax=1)
-result = Entrez.read(search)
-total_count = int(result.get("Count", 0))
+# Total global (info)
+total_count = esearch_count(TERM)
 print(f"{now()} - Nombre total de publications : {total_count}")
 
 if total_count == 0:
     print(Fore.YELLOW + f"{now()} - Aucun résultat trouvé. Fin." + Fore.RESET)
     raise SystemExit(0)
 
-# Récupération par lots de 50
-all_ids = []
-retstart = 0
+# 1) Découpe en sous-requêtes par dates (chaque sous-requête <= 9000)
+ranges = split_date_ranges(BASE_TERM, d1, d2)
+print(f"{now()} - Nombre de sous-plages de dates : {len(ranges)}")
 
-while retstart < total_count:
-    print(f"{now()} - Récupération des PMIDs {retstart+1} à {min(retstart+BATCH_SIZE, total_count)}...")
-    handle = Entrez.esearch(
-        db=BASE_NCBI,
-        term=TERM,
-        sort=ORDRE_TRI,
-        retstart=retstart,
-        retmax=BATCH_SIZE
-    )
-    batch = Entrez.read(handle)
-    ids_batch = batch.get("IdList", [])
-    all_ids.extend(ids_batch)
-    retstart += BATCH_SIZE
-    time.sleep(0.34)  # délai recommandé par NCBI
+# 2) Récupère tous les PMIDs sous-plage par sous-plage
+all_ids = []
+for (ra, rb) in ranges:
+    sub_term = build_term(BASE_TERM, ra, rb)
+    sub_count = esearch_count(sub_term)
+    print(f"{now()} - Sous-requête {fmt_yyyymmdd(ra)} -> {fmt_yyyymmdd(rb)} : {sub_count} résultats")
+
+    ids_sub = fetch_all_ids_for_term(sub_term)
+    all_ids.extend(ids_sub)
+
+    # petite pause entre sous-requêtes
+    time.sleep(1)
 
 print(f"{now()} - Total d'identifiants récupérés : {len(all_ids)}")
 

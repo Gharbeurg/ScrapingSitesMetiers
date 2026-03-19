@@ -17,15 +17,15 @@ driver = webdriver.Chrome(options=option)
 
 #variables
 MAX_PAGE = 100
-TERME_CHERCHE = 'apparel+industry' #AND OR
-ANNEE_DEBUT='2021' #YYYY
+TERME_CHERCHE = '"generative AI" AND "work organization" AND "empirical study"' #AND OR
+ANNEE_DEBUT='2025' #YYYY
 temporisation = 5
 nbre_erreur = 0
 
 #requete scholar
 query_scholar = "https://scholar.google.com/scholar?as_ylo={}&q={}&start={}"
 
-fichier_sortie = "C:/DATA/github/.data/scholar_sortie.xlsx"
+fichier_sortie = "C:/PYTHON/.data/scholar_sortie.xlsx"
 df_resultats = pd.DataFrame(columns =  ['titre', 'lien', 'auteurs', 'annee', 'journal','editeur', 'cite', 'resume'])
 l_titre = []
 l_lien = []
