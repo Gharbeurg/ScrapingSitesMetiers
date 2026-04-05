@@ -26,9 +26,9 @@ except Exception:
 # Paramètres
 # ========================
 BATCH_SIZE = 50  # taille de lot pour efetch (<=100 recommandé)
-TERME_CHERCHE = "(('Colorectal Neoplasms'[MeSH Terms] OR colorectal cancer[Title/Abstract] OR colon cancer[Title/Abstract] OR rectal cancer[Title/Abstract]) AND ('Artificial Intelligence'[MeSH Terms] OR artificial intelligence[Title/Abstract] OR machine learning[Title/Abstract] OR deep learning[Title/Abstract] OR neural network*[Title/Abstract]))"
-DATE_DEBUT = "2025/09/01"
-DATE_FIN = "2026/03/01"
+TERME_CHERCHE = "(('Artificial Intelligence'[Mesh] OR 'Machine Learning'[Mesh] OR 'Deep Learning'[Mesh] OR 'artificial intelligence' OR 'machine learning' OR 'deep learning') AND ('Thoracic Neoplasms'[Mesh] OR 'Lung Neoplasms'[Mesh] OR 'thoracic oncology' OR 'lung cancer')) AND (review[Publication Type])"
+DATE_DEBUT = "2025/06/01"
+DATE_FIN = "2026/03/27"
 MAIL_PUBMED = "dev@atawao.com"
 BASE_NCBI = "pubmed"
 ORDRE_TRI = "pub date"
@@ -438,6 +438,46 @@ df_pages = pd.DataFrame(rows, columns=[
 
 if os.path.exists(fichier_pubmed_sortie):
     os.remove(fichier_pubmed_sortie)
+
+# ========================
+# Découpage des colonnes longues (Excel max 32767 caractères)
+# ========================
+
+MAX_LEN = 32767
+
+def split_text_columns(df, col_name, max_len=MAX_LEN):
+    if col_name not in df.columns:
+        return df
+
+    new_cols = {}
+
+    for idx, val in df[col_name].items():
+        if isinstance(val, str) and len(val) > max_len:
+            parts = [val[i:i+max_len] for i in range(0, len(val), max_len)]
+            for i, part in enumerate(parts):
+                col_part = f"{col_name}_{i+1}"
+                if col_part not in new_cols:
+                    new_cols[col_part] = {}
+                new_cols[col_part][idx] = part
+        else:
+            # valeur courte → reste dans la colonne 1
+            col_part = f"{col_name}_1"
+            if col_part not in new_cols:
+                new_cols[col_part] = {}
+            new_cols[col_part][idx] = val
+
+    # Ajoute les nouvelles colonnes au dataframe
+    for col, values in new_cols.items():
+        df[col] = pd.Series(values)
+
+    # Supprime la colonne originale
+    df.drop(columns=[col_name], inplace=True)
+
+    return df
+
+# Appliquer aux colonnes longues
+df_pages = split_text_columns(df_pages, "resume")
+df_pages = split_text_columns(df_pages, "texte_complet")
 
 df_pages.to_excel(fichier_pubmed_sortie, index=False)
 print(f"{now()} - Terminé → {fichier_pubmed_sortie}")
