@@ -26,9 +26,9 @@ except Exception:
 # Paramètres
 # ========================
 BATCH_SIZE = 50  # taille de lot pour efetch (<=100 recommandé)
-TERME_CHERCHE = "(('Artificial Intelligence'[Mesh] OR 'Machine Learning'[Mesh] OR 'Deep Learning'[Mesh] OR 'artificial intelligence' OR 'machine learning' OR 'deep learning') AND ('Thoracic Neoplasms'[Mesh] OR 'Lung Neoplasms'[Mesh] OR 'thoracic oncology' OR 'lung cancer')) AND (review[Publication Type])"
-DATE_DEBUT = "2025/06/01"
-DATE_FIN = "2026/03/27"
+TERME_CHERCHE = "('Pulmonary Disease, Chronic Obstructive'[Mesh] OR COPD OR 'chronic obstructive pulmonary disease') AND ('exacerbation*' OR 'acute exacerbation*' OR prevention) AND ('Randomized Controlled Trial'[Publication Type] OR 'Clinical Trial'[Publication Type] OR 'Meta-Analysis'[Publication Type] OR 'Systematic Review'[Publication Type] OR 'Network Meta-Analysis'[Publication Type]) AND (humans[MeSH Terms])"
+DATE_DEBUT = "2025/01/01"
+DATE_FIN = "2026/04/01"
 MAIL_PUBMED = "dev@atawao.com"
 BASE_NCBI = "pubmed"
 ORDRE_TRI = "pub date"
