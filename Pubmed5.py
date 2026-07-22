@@ -26,9 +26,9 @@ except Exception:
 # Paramètres
 # ========================
 BATCH_SIZE = 50  # taille de lot pour efetch (<=100 recommandé)
-TERME_CHERCHE = "('Pulmonary Disease, Chronic Obstructive'[Mesh] OR COPD OR 'chronic obstructive pulmonary disease') AND ('exacerbation*' OR 'acute exacerbation*' OR prevention) AND ('Randomized Controlled Trial'[Publication Type] OR 'Clinical Trial'[Publication Type] OR 'Meta-Analysis'[Publication Type] OR 'Systematic Review'[Publication Type] OR 'Network Meta-Analysis'[Publication Type]) AND (humans[MeSH Terms])"
+TERME_CHERCHE = "('Allergy and Immunology'[Mesh] OR allerg*[Title/Abstract] OR asthma[Title/Abstract] OR 'allergic rhinitis'[Title/Abstract] OR 'food allergy'[Title/Abstract] OR anaphylaxis[Title/Abstract] OR 'atopic dermatitis'[Title/Abstract] OR urticaria[Title/Abstract] OR 'drug hypersensitivity'[Title/Abstract] OR 'allergen immunotherapy'[Title/Abstract]) AND ('Practice Patterns, Physicians''[Mesh] OR 'Clinical Practice'[Mesh] OR 'Guideline Adherence'[Mesh] OR 'treatment pattern*'[Title/Abstract] OR 'prescribing pattern*'[Title/Abstract] OR 'diagnostic practice*'[Title/Abstract] OR 'management practice*'[Title/Abstract] OR 'clinical practice*'[Title/Abstract])AND (evol*[Title/Abstract] OR chang*[Title/Abstract] OR trend*[Title/Abstract] OR shift*[Title/Abstract] OR impact[Title/Abstract] OR adoption[Title/Abstract] OR implementation[Title/Abstract] OR 'before and after'[Title/Abstract] OR pre-post[Title/Abstract] OR longitudinal[Title/Abstract] OR 'over time'[Title/Abstract] OR 'time trend*'[Title/Abstract] OR 'temporal trend*'[Title/Abstract])"
 DATE_DEBUT = "2025/01/01"
-DATE_FIN = "2026/04/01"
+DATE_FIN = "2026/06/01"
 MAIL_PUBMED = "dev@atawao.com"
 BASE_NCBI = "pubmed"
 ORDRE_TRI = "pub date"
