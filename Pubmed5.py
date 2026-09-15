@@ -26,9 +26,9 @@ except Exception:
 # Paramètres
 # ========================
 BATCH_SIZE = 50  # taille de lot pour efetch (<=100 recommandé)
-TERME_CHERCHE = "('Allergy and Immunology'[Mesh] OR allerg*[Title/Abstract] OR asthma[Title/Abstract] OR 'allergic rhinitis'[Title/Abstract] OR 'food allergy'[Title/Abstract] OR anaphylaxis[Title/Abstract] OR 'atopic dermatitis'[Title/Abstract] OR urticaria[Title/Abstract] OR 'drug hypersensitivity'[Title/Abstract] OR 'allergen immunotherapy'[Title/Abstract]) AND ('Practice Patterns, Physicians''[Mesh] OR 'Clinical Practice'[Mesh] OR 'Guideline Adherence'[Mesh] OR 'treatment pattern*'[Title/Abstract] OR 'prescribing pattern*'[Title/Abstract] OR 'diagnostic practice*'[Title/Abstract] OR 'management practice*'[Title/Abstract] OR 'clinical practice*'[Title/Abstract])AND (evol*[Title/Abstract] OR chang*[Title/Abstract] OR trend*[Title/Abstract] OR shift*[Title/Abstract] OR impact[Title/Abstract] OR adoption[Title/Abstract] OR implementation[Title/Abstract] OR 'before and after'[Title/Abstract] OR pre-post[Title/Abstract] OR longitudinal[Title/Abstract] OR 'over time'[Title/Abstract] OR 'time trend*'[Title/Abstract] OR 'temporal trend*'[Title/Abstract])"
-DATE_DEBUT = "2025/01/01"
-DATE_FIN = "2026/06/01"
+TERME_CHERCHE = '(("Prostatic Neoplasms"[Mesh] OR "prostate cancer"[Title/Abstract] OR "prostatic cancer"[Title/Abstract] OR "prostate neoplasm*"[Title/Abstract]) AND ("Artificial Intelligence"[Mesh] OR "Machine Learning"[Mesh] OR "artificial intelligence"[Title/Abstract] OR "machine learning"[Title/Abstract] OR "deep learning"[Title/Abstract] OR "neural network*"[Title/Abstract] OR "large language model*"[Title/Abstract] OR "generative AI"[Title/Abstract] OR "radiomics"[Title/Abstract]) AND (diagnos*[Title/Abstract] OR detect*[Title/Abstract] OR screen*[Title/Abstract] OR classif*[Title/Abstract] OR predict*[Title/Abstract] OR prognos*[Title/Abstract] OR stratification[Title/Abstract] OR imaging[Title/Abstract] OR MRI[Title/Abstract] OR pathology[Title/Abstract] OR biopsy[Title/Abstract] OR treatment[Title/Abstract] OR therap*[Title/Abstract] OR recurrence[Title/Abstract] OR survival[Title/Abstract]))'
+DATE_DEBUT = "2026/01/01"
+DATE_FIN = "2026/12/01"
 MAIL_PUBMED = "dev@atawao.com"
 BASE_NCBI = "pubmed"
 ORDRE_TRI = "pub date"
