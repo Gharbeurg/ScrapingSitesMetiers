@@ -1,0 +1,8 @@
+pandas
+requests
+biopython
+colorama
+beautifulsoup4
+selenium
+PyYAML
+openpyxl
